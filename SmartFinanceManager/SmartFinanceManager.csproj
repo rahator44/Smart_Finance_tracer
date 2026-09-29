@@ -10,6 +10,7 @@
     <RootNamespace>SmartFinanceManager</RootNamespace>
     <AssemblyName>SmartFinanceManager</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Description>Smart Finance Tracer - Enterprise Corporate &amp; Personal Finance</Description>
   </PropertyGroup>
 
   <ItemGroup>
