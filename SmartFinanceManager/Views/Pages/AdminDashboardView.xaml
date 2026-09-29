@@ -1,0 +1,940 @@
+<UserControl x:Class="SmartFinanceManager.Views.AdminDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:SmartFinanceManager.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000">
+
+    <Grid Background="Transparent">
+        <!-- Main Content Area -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,10,0">
+            <StackPanel Margin="0,0,0,24">
+                <!-- Header with Title and Quick Refresh -->
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ADMINISTRATION PORTAL" Style="{StaticResource TitleTextStyle}" FontSize="20"/>
+                            <Border Background="#25FF3B30" CornerRadius="6" Padding="8,2" Margin="12,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="ADMIN ACCESS" Foreground="#FF3B30" FontSize="11" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Text="Site financial overview, operating expenses, user management, and Office subscription verifications." 
+                                   Style="{StaticResource SubtitleTextStyle}" 
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1" 
+                            Content="↻ Refresh Data" 
+                            Background="{DynamicResource CardSecondaryBrush}" 
+                            Foreground="{DynamicResource TextBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            Padding="14,8" 
+                            FontSize="12" 
+                            FontWeight="SemiBold"
+                            Cursor="Hand"
+                            Command="{Binding RefreshCommand}"/>
+                </Grid>
+
+                <!-- Section Navigation Tabs -->
+                <Border Background="{DynamicResource CardSecondaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="4" Margin="0,0,0,18">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <RadioButton Grid.Column="0" 
+                                     Content="📊 Site Financial Overview" 
+                                     IsChecked="{Binding IsOverviewActive}" 
+                                     Command="{Binding SelectSectionCommand}" 
+                                     CommandParameter="Overview" 
+                                     Style="{StaticResource TabRadioButtonStyle}" 
+                                     Height="36"/>
+
+                        <RadioButton Grid.Column="1" 
+                                     IsChecked="{Binding IsSubscriptionsActive}" 
+                                     Command="{Binding SelectSectionCommand}" 
+                                     CommandParameter="Subscriptions" 
+                                     Style="{StaticResource TabRadioButtonStyle}" 
+                                     Height="36">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="💳 Office Subscriptions" VerticalAlignment="Center"/>
+                                <Border Background="#FF9500" CornerRadius="8" Padding="6,1" Margin="6,0,0,0" 
+                                        Visibility="{Binding Stats.PendingSubscriptions, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=Inverse}">
+                                    <TextBlock Text="{Binding Stats.PendingSubscriptions}" Foreground="Black" FontSize="10" FontWeight="Bold"/>
+                                </Border>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Grid.Column="2" 
+                                     Content="👥 User Accounts" 
+                                     IsChecked="{Binding IsUsersActive}" 
+                                     Command="{Binding SelectSectionCommand}" 
+                                     CommandParameter="Users" 
+                                     Style="{StaticResource TabRadioButtonStyle}" 
+                                     Height="36"/>
+                    </Grid>
+                </Border>
+
+                <!-- ================= SECTION 1: OVERVIEW ================= -->
+                <StackPanel Visibility="{Binding IsOverviewActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- SITE FINANCIAL OVERVIEW SECTION -->
+                    <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="18">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                <Border Width="28" Height="28" CornerRadius="14" Background="#252ECC71" Margin="0,0,8,0">
+                                    <TextBlock Text="৳" FontSize="16" FontWeight="Bold" Foreground="#2ECC71" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="SITE FINANCIAL OVERVIEW (PLATFORM TREASURY)" Foreground="#2ECC71" FontWeight="Bold" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Site Total Income (Subscription Revenue) -->
+                                <Border Grid.Column="0" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Site Total Income" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.SiteTotalIncome, Converter={StaticResource CurrencyAbsFormatter}}" Foreground="{DynamicResource GreenBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="All Subscriptions" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Site Operating Expenses -->
+                                <Border Grid.Column="2" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Site Expenses" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.SiteTotalExpenses, Converter={StaticResource CurrencyAbsFormatter}}" Foreground="{DynamicResource RedBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Platform Overhead" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Site Net Profit -->
+                                <Border Grid.Column="4" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Site Net Balance" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.SiteNetProfit, Converter={StaticResource AmountFormatter}}" 
+                                                   Foreground="{Binding Stats.SiteNetProfit, Converter={StaticResource AmountToBrush}}" 
+                                                   FontSize="20" 
+                                                   FontWeight="Bold" 
+                                                   Margin="0,4,0,0"/>
+                                        <TextBlock Text="Net Platform Profit" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Active Paid Subscribers -->
+                                <Border Grid.Column="6" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Paid Subscribers" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.ActiveOfficeSubscribers}" Foreground="{DynamicResource AccentBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Corporate Accounts" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SITE OPERATING EXPENSES RECORDING & LEDGER SECTION -->
+                    <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="18">
+                        <StackPanel>
+                            <!-- Header with Title and Add Expense Button -->
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <Border Width="28" Height="28" CornerRadius="14" Background="#25FF3B30" Margin="0,0,8,0">
+                                        <TextBlock Text="⚙️" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="SITE OPERATING EXPENSES (PLATFORM OVERHEAD)" Foreground="#FF3B30" FontWeight="Bold" FontSize="13"/>
+                                        <TextBlock Text="Record hosting, server, domain, gateway, and platform operating costs in runtime." Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <Button Grid.Column="1" 
+                                        Content="➕ Add Expense" 
+                                        Background="#FF3B30" 
+                                        Foreground="{DynamicResource TextBrush}" 
+                                        FontWeight="Bold" 
+                                        FontSize="12" 
+                                        Padding="14,7" 
+                                        BorderThickness="0" 
+                                        Cursor="Hand" 
+                                        Command="{Binding OpenAddExpenseModalCommand}">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="8"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </Grid>
+
+                            <!-- Expenses Table Header -->
+                            <Border Background="{DynamicResource CardSecondaryBrush}" Padding="14,10" CornerRadius="8" Margin="0,0,0,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="60"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="DATE" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="1" Text="CATEGORY" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="2" Text="DESCRIPTION" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="3" Text="AMOUNT" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="4" Text="ACTION" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Expenses Items List -->
+                            <ItemsControl ItemsSource="{Binding SiteExpensesList}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="14,10" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1.2*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="1.5*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Date -->
+                                                <TextBlock Grid.Column="0" Text="{Binding Date, StringFormat={}{0:dd MMM yyyy}}" Foreground="{DynamicResource TextBrush}" FontSize="12" VerticalAlignment="Center"/>
+
+                                                <!-- Category -->
+                                                <Border Grid.Column="1" Background="#20FF3B30" CornerRadius="6" Padding="8,3" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Category}" Foreground="#FF6B6B" FontSize="11" FontWeight="SemiBold"/>
+                                                </Border>
+
+                                                <!-- Description -->
+                                                <TextBlock Grid.Column="2" Text="{Binding Description}" Foreground="{DynamicResource TextBrush}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                                <!-- Amount -->
+                                                <TextBlock Grid.Column="3" Text="{Binding Amount, Converter={StaticResource CurrencyAbsFormatter}}" Foreground="{DynamicResource RedBrush}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                                                <!-- Delete Button -->
+                                                <Button Grid.Column="4" 
+                                                        Content="✕" 
+                                                        Background="Transparent" 
+                                                        Foreground="{DynamicResource TextMutedBrush}" 
+                                                        BorderThickness="0" 
+                                                        FontSize="12" 
+                                                        FontWeight="Bold" 
+                                                        Cursor="Hand" 
+                                                        HorizontalAlignment="Center" 
+                                                        VerticalAlignment="Center"
+                                                        ToolTip="Delete Expense Record"
+                                                        Command="{Binding DataContext.DeleteSiteExpenseCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                        CommandParameter="{Binding}">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="4"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Empty Expenses State -->
+                            <Border Visibility="{Binding SiteExpensesList.Count, Converter={StaticResource CountToVisibilityConverter}}"
+                                    Padding="24" HorizontalAlignment="Center">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="⚙️" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,6"/>
+                                    <TextBlock Text="No site operating expenses recorded yet." Foreground="{DynamicResource TextMutedBrush}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Click + Add Expense above to log platform hosting, domain, or maintenance costs." Foreground="{DynamicResource TextMutedBrush}" FontSize="11" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- SYSTEM USER & TRANSACTION ANALYTICS SECTION -->
+                    <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="18">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                <Border Width="28" Height="28" CornerRadius="14" Background="#20007AFF" Margin="0,0,8,0">
+                                    <TextBlock Text="📊" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <TextBlock Text="PLATFORM ACCOUNTS &amp; ACTIVITY" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Total Users -->
+                                <Border Grid.Column="0" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Total Users" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.TotalUsers}" Foreground="{DynamicResource TextBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="All Registered" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Personal Users -->
+                                <Border Grid.Column="2" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Personal Users" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.PersonalUsers}" Foreground="{DynamicResource TextBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Free Tier" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Office Accounts -->
+                                <Border Grid.Column="4" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Office Profiles" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.OfficeUsers}" Foreground="{DynamicResource TextBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Corporate Profiles" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Total Platform Transactions -->
+                                <Border Grid.Column="6" Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Platform Entries" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                                        <TextBlock Text="{Binding Stats.TotalTransactions}" Foreground="{DynamicResource TextBrush}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Tracked Transactions" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ================= SECTION 2: OFFICE SUBSCRIPTION MANAGEMENT ================= -->
+                <StackPanel Visibility="{Binding IsSubscriptionsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- Filters & Search Bar -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search Input -->
+                        <Border Grid.Column="0" Background="{DynamicResource CardSecondaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10,4" Margin="0,0,12,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="🔍" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1" 
+                                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="Transparent" 
+                                         BorderThickness="0" 
+                                         Padding="0" 
+                                         FontSize="13" 
+                                         Foreground="{DynamicResource TextBrush}" 
+                                         CaretBrush="White"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Status Filter Buttons -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <RadioButton Content="All" 
+                                         IsChecked="{Binding SubscriptionFilter, Converter={StaticResource StringToBoolConverter}, ConverterParameter=All}" 
+                                         Command="{Binding FilterSubscriptionsCommand}" 
+                                         CommandParameter="All" 
+                                         Style="{StaticResource TabRadioButtonStyle}" 
+                                         Height="34" Margin="0,0,4,0"/>
+                            <RadioButton Content="Pending" 
+                                         IsChecked="{Binding SubscriptionFilter, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Pending}" 
+                                         Command="{Binding FilterSubscriptionsCommand}" 
+                                         CommandParameter="Pending" 
+                                         Style="{StaticResource TabRadioButtonStyle}" 
+                                         Height="34" Margin="0,0,4,0"/>
+                            <RadioButton Content="Approved" 
+                                         IsChecked="{Binding SubscriptionFilter, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Approved}" 
+                                         Command="{Binding FilterSubscriptionsCommand}" 
+                                         CommandParameter="Approved" 
+                                         Style="{StaticResource TabRadioButtonStyle}" 
+                                         Height="34" Margin="0,0,4,0"/>
+                            <RadioButton Content="Rejected" 
+                                         IsChecked="{Binding SubscriptionFilter, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Rejected}" 
+                                         Command="{Binding FilterSubscriptionsCommand}" 
+                                         CommandParameter="Rejected" 
+                                         Style="{StaticResource TabRadioButtonStyle}" 
+                                         Height="34"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Subscriptions Table Card -->
+                    <Border Style="{StaticResource CardBorderStyle}" Padding="0">
+                        <StackPanel>
+                            <!-- Table Header -->
+                            <Border Background="{DynamicResource CardSecondaryBrush}" Padding="16,10" CornerRadius="12,12,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="1.2*"/>
+                                        <ColumnDefinition Width="140"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="USER / EMAIL" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="1" Text="TRANSACTION ID" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="2" Text="AMOUNT" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="3" Text="SUBMITTED" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="4" Text="STATUS" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="5" Text="ACTIONS" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Subscriptions List -->
+                            <ItemsControl ItemsSource="{Binding FilteredSubscriptions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="16,12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="1.5*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="1.5*"/>
+                                                    <ColumnDefinition Width="1.2*"/>
+                                                    <ColumnDefinition Width="140"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- User & Email -->
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding User.FullName, FallbackValue='Account User'}" Foreground="{DynamicResource TextBrush}" FontSize="13" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="{Binding Email}" Foreground="{DynamicResource TextMutedBrush}" FontSize="11"/>
+                                                </StackPanel>
+
+                                                <!-- Transaction ID -->
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding TransactionId}" Foreground="#FF6B6B" FontSize="13" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding PaymentMethod, StringFormat='Via {0}'}" Foreground="{DynamicResource TextMutedBrush}" FontSize="10"/>
+                                                </StackPanel>
+
+                                                <!-- Amount -->
+                                                <TextBlock Grid.Column="2" Text="{Binding Amount, StringFormat='{}{0:N0} BDT'}" Foreground="{DynamicResource TextBrush}" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                                                <!-- Submitted Date -->
+                                                <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding SubmittedDate, StringFormat={}{0:dd MMM yyyy}}" Foreground="{DynamicResource TextBrush}" FontSize="12"/>
+                                                    <TextBlock Text="{Binding SubmittedDate, StringFormat={}{0:hh:mm tt}}" Foreground="{DynamicResource TextMutedBrush}" FontSize="10"/>
+                                                </StackPanel>
+
+                                                <!-- Status Badge -->
+                                                <Border Grid.Column="4" 
+                                                        Background="{Binding Status, Converter={StaticResource SubscriptionStatusToBadgeBgConverter}}" 
+                                                        CornerRadius="6" 
+                                                        Padding="8,3" 
+                                                        HorizontalAlignment="Left" 
+                                                        VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Status}" 
+                                                               Foreground="{Binding Status, Converter={StaticResource SubscriptionStatusToBrushConverter}}" 
+                                                               FontSize="10" 
+                                                               FontWeight="Bold"/>
+                                                </Border>
+
+                                                <!-- Actions -->
+                                                <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <!-- Actions for PENDING subscriptions: ✓ Approve, ✕ Reject, 👁 Details -->
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding Status, Converter={StaticResource SubscriptionStatusToPendingVisibilityConverter}}">
+                                                        <!-- Inspect / Details Button -->
+                                                        <Button Content="👁" 
+                                                                Background="{DynamicResource CardSecondaryBrush}" 
+                                                                Foreground="{DynamicResource TextBrush}" 
+                                                                Width="32" Height="30" 
+                                                                BorderThickness="0" 
+                                                                Cursor="Hand" 
+                                                                Margin="0,0,4,0" 
+                                                                ToolTip="View Details &amp; Notes"
+                                                                Command="{Binding DataContext.ViewSubscriptionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                CommandParameter="{Binding}">
+                                                            <Button.Resources>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="CornerRadius" Value="6"/>
+                                                                </Style>
+                                                            </Button.Resources>
+                                                        </Button>
+
+                                                        <!-- Approve Button -->
+                                                        <Button Content="✓" 
+                                                                Background="#2ECC71" 
+                                                                Foreground="{DynamicResource TextBrush}" 
+                                                                Width="32" Height="30" 
+                                                                BorderThickness="0" 
+                                                                FontWeight="Bold" 
+                                                                Cursor="Hand" 
+                                                                Margin="0,0,4,0" 
+                                                                ToolTip="Approve Office Access"
+                                                                Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                CommandParameter="{Binding}">
+                                                            <Button.Resources>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="CornerRadius" Value="6"/>
+                                                                </Style>
+                                                            </Button.Resources>
+                                                        </Button>
+
+                                                        <!-- Reject Button -->
+                                                        <Button Content="✕" 
+                                                                Background="#FF3B30" 
+                                                                Foreground="{DynamicResource TextBrush}" 
+                                                                Width="32" Height="30" 
+                                                                BorderThickness="0" 
+                                                                FontWeight="Bold" 
+                                                                Cursor="Hand" 
+                                                                ToolTip="Reject Subscription"
+                                                                Command="{Binding DataContext.RejectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                CommandParameter="{Binding}">
+                                                            <Button.Resources>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="CornerRadius" Value="6"/>
+                                                                </Style>
+                                                            </Button.Resources>
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                    <!-- Action for APPROVED (or Resolved) subscriptions: Single ℹ Info Button -->
+                                                    <StackPanel Orientation="Horizontal" Visibility="{Binding Status, Converter={StaticResource SubscriptionStatusToResolvedVisibilityConverter}}">
+                                                        <Button Content="ℹ" 
+                                                                Background="{DynamicResource CardSecondaryBrush}" 
+                                                                Foreground="#2ECC71" 
+                                                                FontSize="14" 
+                                                                FontWeight="Bold" 
+                                                                Width="36" Height="30" 
+                                                                BorderThickness="0" 
+                                                                Cursor="Hand" 
+                                                                ToolTip="View Subscription Details &amp; History"
+                                                                Command="{Binding DataContext.ViewSubscriptionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                CommandParameter="{Binding}">
+                                                            <Button.Resources>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="CornerRadius" Value="6"/>
+                                                                </Style>
+                                                            </Button.Resources>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Empty Subscriptions State -->
+                            <Border Visibility="{Binding FilteredSubscriptions.Count, Converter={StaticResource CountToVisibilityConverter}}"
+                                    Padding="32" HorizontalAlignment="Center">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="💳" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                    <TextBlock Text="No subscription requests found matching the current filter." Foreground="{DynamicResource TextMutedBrush}" FontSize="13" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ================= SECTION 3: USER ACCOUNTS DIRECTORY ================= -->
+                <StackPanel Visibility="{Binding IsUsersActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <!-- Filters & Search Bar -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search Input -->
+                        <Border Grid.Column="0" Background="{DynamicResource CardSecondaryBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10,4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="🔍" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1" 
+                                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                                         Background="Transparent" 
+                                         BorderThickness="0" 
+                                         Padding="0" 
+                                         FontSize="13" 
+                                         Foreground="{DynamicResource TextBrush}" 
+                                         CaretBrush="White"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Users Table Card -->
+                    <Border Style="{StaticResource CardBorderStyle}" Padding="0">
+                        <StackPanel>
+                            <!-- Table Header -->
+                            <Border Background="{DynamicResource CardSecondaryBrush}" Padding="16,10" CornerRadius="12,12,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="1.2*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="NAME" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="1" Text="EMAIL" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="2" Text="ROLE" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="3" Text="OFFICE SUB" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="4" Text="MEMBER SINCE" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="Bold"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Users List -->
+                            <ItemsControl ItemsSource="{Binding FilteredUsers}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="16,12" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="1.2*"/>
+                                                    <ColumnDefinition Width="1.5*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Full Name -->
+                                                <TextBlock Grid.Column="0" Text="{Binding FullName}" Foreground="{DynamicResource TextBrush}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                                                <!-- Email -->
+                                                <TextBlock Grid.Column="1" Text="{Binding Email}" Foreground="{DynamicResource TextBrush}" FontSize="12" VerticalAlignment="Center"/>
+
+                                                <!-- Role Badge -->
+                                                <Border Grid.Column="2" 
+                                                        Background="{Binding Role, Converter={StaticResource UserRoleToBadgeBgConverter}}" 
+                                                        CornerRadius="6" 
+                                                        Padding="8,2" 
+                                                        HorizontalAlignment="Left" 
+                                                        VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Role}" 
+                                                               Foreground="{Binding Role, Converter={StaticResource UserRoleToBrushConverter}}" 
+                                                               FontSize="10" 
+                                                               FontWeight="Bold"/>
+                                                </Border>
+
+                                                <!-- Office Subscription Status -->
+                                                <Border Grid.Column="3" 
+                                                        Background="{Binding SubscriptionStatus, Converter={StaticResource SubscriptionStatusToBadgeBgConverter}}" 
+                                                        CornerRadius="6" 
+                                                        Padding="8,2" 
+                                                        HorizontalAlignment="Left" 
+                                                        VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding SubscriptionStatusText}" 
+                                                               Foreground="{Binding SubscriptionStatus, Converter={StaticResource SubscriptionStatusToBrushConverter}}" 
+                                                               FontSize="10" 
+                                                               FontWeight="Bold"/>
+                                                </Border>
+
+                                                <!-- Member Since -->
+                                                <TextBlock Grid.Column="4" Text="{Binding CreatedDate, StringFormat={}{0:dd MMM yyyy}}" Foreground="{DynamicResource TextMutedBrush}" FontSize="12" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ================= SUBSCRIPTION REVIEW ACTION MODAL ================= -->
+        <Grid Visibility="{Binding IsActionModalVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Background="#B0000000">
+            <Border Background="{DynamicResource CardBrush}" 
+                    BorderBrush="#FF3B30" 
+                    BorderThickness="1" 
+                    CornerRadius="16" 
+                    Width="460" 
+                    Padding="22" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="30" Opacity="0.8"/>
+                </Border.Effect>
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,14">
+                        <TextBlock Text="Subscription Details &amp; Review" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextBrush}"/>
+                        <Button Content="✕" 
+                                HorizontalAlignment="Right" 
+                                Background="Transparent" 
+                                Foreground="{DynamicResource TextMutedBrush}" 
+                                BorderThickness="0" 
+                                FontSize="14" 
+                                FontWeight="Bold" 
+                                Cursor="Hand" 
+                                Command="{Binding CloseModalCommand}"/>
+                    </Grid>
+
+                    <!-- Details Card -->
+                    <Border Background="{DynamicResource CardSecondaryBrush}" CornerRadius="10" Padding="14" Margin="0,0,0,14">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="User Account:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.User.FullName}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Email Address:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.Email}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Transaction ID:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.TransactionId}" Foreground="#FF6B6B" FontWeight="ExtraBold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Amount:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.Amount, StringFormat='{}{0:N0} BDT'}" Foreground="#2ECC71" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Current Status:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.Status}" Foreground="{Binding SelectedSubscription.Status, Converter={StaticResource SubscriptionStatusToBrushConverter}}" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock Text="Submitted Date:" Style="{StaticResource SubtitleTextStyle}"/>
+                                <TextBlock Text="{Binding SelectedSubscription.SubmittedDate, StringFormat={}{0:dd MMM yyyy, hh:mm tt}}" Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Admin Note Input -->
+                    <TextBlock Text="ADMIN NOTE / REASON (OPTIONAL)" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding AdminNoteInput, UpdateSourceTrigger=PropertyChanged}" 
+                             Background="{DynamicResource InputBackgroundBrush}" 
+                             BorderThickness="1" 
+                             BorderBrush="{DynamicResource BorderBrush}" 
+                             Padding="10,8" 
+                             FontSize="13" 
+                             Foreground="{DynamicResource TextBrush}" 
+                             Margin="0,0,0,16"/>
+
+                    <!-- Action Buttons for PENDING -->
+                    <Grid Visibility="{Binding SelectedSubscription.Status, Converter={StaticResource SubscriptionStatusToPendingVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" 
+                                Content="✓ APPROVE" 
+                                Background="#2ECC71" 
+                                Foreground="{DynamicResource TextBrush}" 
+                                FontWeight="Bold" 
+                                Height="40" 
+                                BorderThickness="0" 
+                                Cursor="Hand" 
+                                Command="{Binding ApproveCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button Grid.Column="2" 
+                                Content="✕ REJECT" 
+                                Background="#FF3B30" 
+                                Foreground="{DynamicResource TextBrush}" 
+                                FontWeight="Bold" 
+                                Height="40" 
+                                BorderThickness="0" 
+                                Cursor="Hand" 
+                                Command="{Binding RejectCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+
+                    <!-- Action Button for APPROVED / RESOLVED -->
+                    <Button Visibility="{Binding SelectedSubscription.Status, Converter={StaticResource SubscriptionStatusToResolvedVisibilityConverter}}"
+                            Content="CLOSE" 
+                            Background="{DynamicResource CardSecondaryBrush}" 
+                            Foreground="{DynamicResource TextBrush}" 
+                            FontWeight="Bold" 
+                            Height="40" 
+                            BorderThickness="0" 
+                            Cursor="Hand" 
+                            Command="{Binding CloseModalCommand}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ================= ADD SITE OPERATING EXPENSE RUNTIME MODAL ================= -->
+        <Grid Visibility="{Binding IsAddExpenseModalVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Background="#B0000000">
+            <Border Background="{DynamicResource CardBrush}" 
+                    BorderBrush="#FF3B30" 
+                    BorderThickness="1" 
+                    CornerRadius="16" 
+                    Width="460" 
+                    Padding="22" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="30" Opacity="0.8"/>
+                </Border.Effect>
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,14">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙️" FontSize="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Record Site Operating Expense" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button Content="✕" 
+                                HorizontalAlignment="Right" 
+                                Background="Transparent" 
+                                Foreground="{DynamicResource TextMutedBrush}" 
+                                BorderThickness="0" 
+                                FontSize="14" 
+                                FontWeight="Bold" 
+                                Cursor="Hand" 
+                                Command="{Binding CloseAddExpenseModalCommand}"/>
+                    </Grid>
+
+                    <!-- Category Selector -->
+                    <TextBlock Text="EXPENSE CATEGORY" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding ExpenseCategories}" 
+                              SelectedItem="{Binding ExpenseCategoryInput}" 
+                              Style="{StaticResource DarkComboBoxStyle}" 
+                              Height="40" 
+                              Margin="0,0,0,12"/>
+
+                    <!-- Amount Input -->
+                    <TextBlock Text="AMOUNT (BDT / $)" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <Border Background="{DynamicResource InputBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="8" Padding="12,8" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="৳" Foreground="#FF3B30" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1" 
+                                     Text="{Binding ExpenseAmountInput, UpdateSourceTrigger=PropertyChanged}" 
+                                     Background="Transparent" 
+                                     BorderThickness="0" 
+                                     Padding="0" 
+                                     FontSize="16" 
+                                     FontWeight="Bold" 
+                                     Foreground="{DynamicResource TextBrush}" 
+                                     CaretBrush="White"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Expense Date -->
+                    <TextBlock Text="EXPENSE DATE" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <Border Background="{DynamicResource InputBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" CornerRadius="8" Padding="12,4" Margin="0,0,0,12">
+                        <DatePicker SelectedDate="{Binding ExpenseDateInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Background="Transparent" 
+                                    Foreground="{DynamicResource TextBrush}" 
+                                    BorderThickness="0" 
+                                    Height="34" 
+                                    VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Description / Notes -->
+                    <TextBlock Text="DESCRIPTION / VENDOR / NOTES" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding ExpenseDescriptionInput, UpdateSourceTrigger=PropertyChanged}" 
+                             Background="{DynamicResource InputBackgroundBrush}" 
+                             BorderThickness="1" 
+                             BorderBrush="{DynamicResource BorderBrush}" 
+                             Padding="10,8" 
+                             FontSize="13" 
+                             Foreground="{DynamicResource TextBrush}" 
+                             Margin="0,0,0,14"/>
+
+                    <!-- Error Message -->
+                    <TextBlock Text="{Binding AddExpenseErrorMessage}" 
+                               Foreground="{DynamicResource RedBrush}" 
+                               FontSize="12" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,12" 
+                               Visibility="{Binding AddExpenseErrorMessage, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+
+                    <!-- Action Buttons -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" 
+                                Content="CANCEL" 
+                                Background="{DynamicResource CardSecondaryBrush}" 
+                                Foreground="{DynamicResource TextBrush}" 
+                                FontWeight="Bold" 
+                                Height="40" 
+                                BorderThickness="0" 
+                                Cursor="Hand" 
+                                Command="{Binding CloseAddExpenseModalCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+
+                        <Button Grid.Column="2" 
+                                Content="SAVE EXPENSE" 
+                                Background="#FF3B30" 
+                                Foreground="{DynamicResource TextBrush}" 
+                                FontWeight="Bold" 
+                                Height="40" 
+                                BorderThickness="0" 
+                                Cursor="Hand" 
+                                Command="{Binding SaveSiteExpenseCommand}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
