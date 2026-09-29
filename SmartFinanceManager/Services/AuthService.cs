@@ -1,3 +1,4 @@
+// [Rupom Security Architecture] Complete Authentication & Session Caching Engine
 using System;
 using System.IO;
 using System.Linq;

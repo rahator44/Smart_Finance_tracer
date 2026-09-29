@@ -1,3 +1,4 @@
+// [Rahat Corporate Seed] Office enterprise quick demo credentials
 using System;
 using System.Windows.Input;
 using SmartFinanceManager.Helpers;

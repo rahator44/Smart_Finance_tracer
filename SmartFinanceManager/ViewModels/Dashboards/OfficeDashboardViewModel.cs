@@ -1,3 +1,4 @@
+// [Rahat Fiscal Architecture] Enterprise Treasury, Transfer Approvals & Net Margin Engine
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -202,11 +203,11 @@ namespace SmartFinanceManager.ViewModels
             var match = MonthOptions.FirstOrDefault(m => m.Year == preferred.Year && m.Month == preferred.Month);
             if (match != default)
             {
-                _selectedMonth = match;
+                SelectedMonth = match;
             }
             else if (MonthOptions.Contains(todayMonth))
             {
-                _selectedMonth = todayMonth;
+                SelectedMonth = todayMonth;
             }
             else
             {

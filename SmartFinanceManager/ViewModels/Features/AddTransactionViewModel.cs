@@ -1,3 +1,4 @@
+// [Rahat Feature] Corporate expense presets and B2B vendor categories
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

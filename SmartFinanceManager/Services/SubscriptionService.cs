@@ -1,3 +1,4 @@
+// [Rahat Enterprise Audit] Subscription verification audit trail logging and ledger tracking
 using System;
 using System.Collections.Generic;
 using System.Linq;
