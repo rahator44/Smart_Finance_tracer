@@ -1,3 +1,4 @@
+// [Rahat Window Management] Responsive window restore and size preservation on logout
 using System.Windows;
 
 namespace SmartFinanceManager.Helpers
