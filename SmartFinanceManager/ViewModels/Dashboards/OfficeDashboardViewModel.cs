@@ -1,4 +1,4 @@
-// [Rahat Fiscal Architecture] Corporate fiscal tax reporting, runway forecasting & net margin engine
+// [Rahat Fiscal Architecture] Enterprise Treasury, Transfer Approvals & Net Margin Engine
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
