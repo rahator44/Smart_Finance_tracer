@@ -1,3 +1,4 @@
+// [Rahat Enterprise Logic] B2B transaction handling with corporate tax and client sales categorization
 using System;
 using System.Collections.Generic;
 using System.Linq;
