@@ -1,4 +1,4 @@
-// [Rahat Core Navigation] Active navigation tabs, routing commands, and theme synchronizers
+// [Rahat Security Guard] Enforce strict Office subscription licensing validation & route protection
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
