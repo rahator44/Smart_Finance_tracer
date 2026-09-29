@@ -1,0 +1,227 @@
+<UserControl x:Class="SmartFinanceManager.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:SmartFinanceManager.Helpers"
+             Background="{DynamicResource BackgroundBrush}">
+
+    <UserControl.RenderTransform>
+        <TranslateTransform Y="15"/>
+    </UserControl.RenderTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.25"/>
+                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="15" To="0" Duration="0:0:0.25">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="24,14,24,20" MaxWidth="620" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!-- Title -->
+                <RowDefinition Height="Auto"/> <!-- Avatar & Name Header -->
+                <RowDefinition Height="Auto"/> <!-- Account Summary Stats -->
+                <RowDefinition Height="Auto"/> <!-- Appearance & Theme Settings -->
+                <RowDefinition Height="Auto"/> <!-- Change Password Expander -->
+                <RowDefinition Height="Auto"/> <!-- Sign Out Button -->
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="0" Text="User Profile &amp; Settings" Style="{StaticResource TitleTextStyle}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <!-- Avatar & Details Card -->
+            <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="20">
+                <StackPanel HorizontalAlignment="Center">
+                    <!-- Circular Avatar Badge -->
+                    <Border Width="72" Height="72" CornerRadius="36" Background="{DynamicResource AccentBrush}" HorizontalAlignment="Center" Margin="0,0,0,12">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#007AFF" BlurRadius="16" Opacity="0.4" ShadowDepth="2"/>
+                        </Border.Effect>
+                        <TextBlock Text="{Binding UserInitial}" 
+                                   Foreground="White" 
+                                   FontSize="28" 
+                                   FontWeight="Bold" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Full Name -->
+                    <TextBlock Text="{Binding FullName}" 
+                               Foreground="{DynamicResource TextBrush}" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Email -->
+                    <TextBlock Text="{Binding Email}" 
+                               Style="{StaticResource SubtitleTextStyle}" 
+                               FontSize="12" 
+                               Margin="0,3,0,8" 
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Account Mode Badge -->
+                    <Border BorderBrush="{DynamicResource AccentBrush}" 
+                            BorderThickness="1" 
+                            Background="#1A007AFF" 
+                            CornerRadius="10" 
+                            Padding="10,3" 
+                            HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource AccentBrush}" Width="6" Height="6" Margin="0,0,6,0"/>
+                            <TextBlock Text="{Binding AccountType, StringFormat={}{0} Mode}" 
+                                       Foreground="{DynamicResource AccentBrush}" 
+                                       FontSize="11" 
+                                       FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Lifetime Account Statistics Card -->
+            <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="16,14">
+                <StackPanel>
+                    <TextBlock Text="ACCOUNT LIFETIME OVERVIEW" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold" FontSize="10" Margin="0,0,0,12"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="12"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Total Transactions -->
+                        <StackPanel Grid.Row="0" Grid.Column="0">
+                            <TextBlock Text="Total Transactions" Style="{StaticResource SubtitleTextStyle}" FontSize="10"/>
+                            <TextBlock Text="{Binding TotalTransactions}" Foreground="{DynamicResource TextBrush}" FontSize="18" FontWeight="Bold" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Member Since -->
+                        <StackPanel Grid.Row="0" Grid.Column="1">
+                            <TextBlock Text="Member Since" Style="{StaticResource SubtitleTextStyle}" FontSize="10"/>
+                            <TextBlock Text="{Binding MemberSinceText}" Foreground="{DynamicResource TextBrush}" FontSize="18" FontWeight="Bold" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Lifetime Income -->
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="Lifetime Income / Revenue" Style="{StaticResource SubtitleTextStyle}" FontSize="10"/>
+                            <TextBlock Text="{Binding LifetimeIncome, Converter={StaticResource CurrencyAbsFormatter}}" Foreground="{DynamicResource GreenBrush}" FontSize="18" FontWeight="Bold" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Lifetime Expenses -->
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <TextBlock Text="Lifetime Expenses" Style="{StaticResource SubtitleTextStyle}" FontSize="10"/>
+                            <TextBlock Text="{Binding LifetimeExpenses, Converter={StaticResource CurrencyAbsFormatter}}" Foreground="{DynamicResource RedBrush}" FontSize="18" FontWeight="Bold" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Appearance & Theme Card -->
+            <Border Grid.Row="3" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,16" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="APP APPEARANCE" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold" FontSize="10" Margin="0,0,0,2"/>
+                        <TextBlock Text="Switch between Modern Light and Dark theme" Style="{StaticResource SubtitleTextStyle}" FontSize="11"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" 
+                            Command="{Binding ToggleThemeCommand}" 
+                            Style="{StaticResource ThemeToggleButtonStyle}"
+                            ToolTip="Switch between Light and Dark mode">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Path Data="{Binding CurrentThemeIcon, Converter={StaticResource StringToGeometryConverter}}" 
+                                  Fill="{DynamicResource AccentBrush}" 
+                                  Width="13" Height="13" 
+                                  Stretch="Uniform" 
+                                  VerticalAlignment="Center" 
+                                  Margin="0,0,6,0"/>
+                            <TextBlock Text="{Binding CurrentThemeLabel}" 
+                                       Foreground="{DynamicResource TextBrush}" 
+                                       FontSize="11" 
+                                       FontWeight="SemiBold" 
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Security & Password Card with Toggle Expander -->
+            <Border Grid.Row="4" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,20" Padding="16,14">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="SECURITY &amp; PASSWORD" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" FontSize="12"/>
+                            <TextBlock Text="Update your account credentials" Style="{StaticResource SubtitleTextStyle}" FontSize="10" Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" 
+                                Content="{Binding IsChangePasswordExpanded, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Cancel, FallbackValue=Change Password}" 
+                                Style="{StaticResource AccentButtonStyle}" 
+                                Height="28" 
+                                Padding="10,0" 
+                                FontSize="11"
+                                Command="{Binding ToggleChangePasswordCommand}"/>
+                    </Grid>
+
+                    <!-- Change Password Form -->
+                    <StackPanel Margin="0,14,0,0" Visibility="{Binding IsChangePasswordExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <!-- Current Password -->
+                        <TextBlock Text="CURRENT PASSWORD" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding CurrentPassword, UpdateSourceTrigger=PropertyChanged}" 
+                                 Background="{DynamicResource InputBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" 
+                                 Padding="8,6" FontSize="13" Foreground="{DynamicResource TextBrush}" CaretBrush="{DynamicResource TextBrush}" Margin="0,0,0,10"/>
+
+                        <!-- New Password -->
+                        <TextBlock Text="NEW PASSWORD (MIN 6 CHARS)" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding NewPassword, UpdateSourceTrigger=PropertyChanged}" 
+                                 Background="{DynamicResource InputBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" 
+                                 Padding="8,6" FontSize="13" Foreground="{DynamicResource TextBrush}" CaretBrush="{DynamicResource TextBrush}" Margin="0,0,0,10"/>
+
+                        <!-- Confirm New Password -->
+                        <TextBlock Text="CONFIRM NEW PASSWORD" Foreground="{DynamicResource TextMutedBrush}" FontSize="9" FontWeight="Bold" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding ConfirmNewPassword, UpdateSourceTrigger=PropertyChanged}" 
+                                 Background="{DynamicResource InputBackgroundBrush}" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" 
+                                 Padding="8,6" FontSize="13" Foreground="{DynamicResource TextBrush}" CaretBrush="{DynamicResource TextBrush}" Margin="0,0,0,10"/>
+
+                        <!-- Feedback Message -->
+                        <TextBlock Text="{Binding PasswordMessage}" 
+                                   Foreground="{Binding IsPasswordError, Converter={StaticResource AmountToBrush}}" 
+                                   FontSize="11" 
+                                   Margin="0,0,0,10"
+                                   Visibility="{Binding PasswordMessage, Converter={StaticResource NullOrEmptyToVisibilityConverter}}"/>
+
+                        <Button Content="UPDATE PASSWORD" 
+                                Style="{StaticResource AccentButtonStyle}" 
+                                Height="36"
+                                Command="{Binding SavePasswordCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Sign Out Button -->
+            <Button Grid.Row="5" 
+                    Content="SIGN OUT OF ACCOUNT" 
+                    Background="{DynamicResource RedBrush}" 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    Height="42"
+                    Command="{Binding LogoutCommand}"/>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
