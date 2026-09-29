@@ -1,3 +1,4 @@
+// [Rahat Test Suite] Corporate KPI metrics, cash burn rate & subscription lifecycle verification
 using System;
 using System.Linq;
 using Xunit;
