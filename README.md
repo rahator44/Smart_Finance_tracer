@@ -1,5 +1,14 @@
 # Smart Finance Tracer 🚀💼
 
+[![GitHub Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=flat-square&logo=github)](https://github.com/rahator44/Smart_Finance_tracer/releases/tag/v1.0.0)
+[![Live Showcase](https://img.shields.io/badge/Live%20Showcase-GitHub%20Pages-success?style=flat-square&logo=googlechrome)](https://rahator44.github.io/Smart_Finance_tracer/)
+[![Platform](https://img.shields.io/badge/.NET-8.0%20WPF-purple?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
+[![Database](https://img.shields.io/badge/Database-SQLite%20EF%20Core-003B57?style=flat-square&logo=sqlite)](https://www.sqlite.org/)
+
+> 🌐 **Live Interactive Showcase & Web Simulator:** [https://rahator44.github.io/Smart_Finance_tracer/](https://rahator44.github.io/Smart_Finance_tracer/)  
+> 📦 **Latest Release:** [Download v1.0.0 Windows Package](https://github.com/rahator44/Smart_Finance_tracer/releases/tag/v1.0.0)
+
+
 A modern, enterprise-grade WPF desktop financial management platform built with .NET 8, SQLite, and Entity Framework Core. Engineered for both personal pocket tracking and corporate office financial operations.
 
 ## 👥 Contributors & Core Modules
