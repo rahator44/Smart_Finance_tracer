@@ -1,3 +1,4 @@
+// [Rahat Corporate Architecture] Enterprise Revenue, Margin, Burn Rate & Runway Metrics
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
