@@ -1,4 +1,4 @@
-// [Rupom Security Architecture] PBKDF2 with HMAC-SHA256 & Session State Engine
+// [Rupom Security Architecture] Complete Authentication & Session Caching Engine
 using System;
 using System.IO;
 using System.Linq;
