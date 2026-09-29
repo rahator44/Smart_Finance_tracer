@@ -1,4 +1,4 @@
-// [Rahat Corporate Architecture] Enterprise Revenue, Margin, Burn Rate & Runway Metrics
+// [Rahat Fiscal Architecture] Corporate fiscal tax reporting, runway forecasting & net margin engine
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
