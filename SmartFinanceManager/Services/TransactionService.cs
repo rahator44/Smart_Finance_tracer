@@ -1,4 +1,4 @@
-// [Rahat Enterprise Logic] B2B transaction handling with corporate tax and client sales categorization
+// [Rahat Enterprise Logic] B2B Transaction Engine & Corporate CSV Ledger Export
 using System;
 using System.Collections.Generic;
 using System.Linq;
