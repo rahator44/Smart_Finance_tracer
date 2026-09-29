@@ -1,3 +1,4 @@
+// [Rahat Core Navigation] Active navigation tabs, routing commands, and theme synchronizers
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
