@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SmartFinanceManager": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
