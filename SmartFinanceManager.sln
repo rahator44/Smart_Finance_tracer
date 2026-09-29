@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.35000.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A562B289-F9F1-4E15-99D7-A7A97E9BF76C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B458C965-72E5-4673-B24C-FE2D345CD902}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C36F158D-4F54-4B2E-82C3-9A1D1C5980BE}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFinanceManager", "SmartFinanceManager\SmartFinanceManager.csproj", "{71A6C5C1-8BFF-41E1-924A-6D307E061DC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFinanceManager.Tests", "SmartFinanceManager.Tests\SmartFinanceManager.Tests.csproj", "{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71A6C5C1-8BFF-41E1-924A-6D307E061DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A6C5C1-8BFF-41E1-924A-6D307E061DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A6C5C1-8BFF-41E1-924A-6D307E061DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A6C5C1-8BFF-41E1-924A-6D307E061DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71A6C5C1-8BFF-41E1-924A-6D307E061DC1} = {A562B289-F9F1-4E15-99D7-A7A97E9BF76C}
+		{5E393A1C-EB43-4AB8-B4CB-FA180672BD6F} = {B458C965-72E5-4673-B24C-FE2D345CD902}
+	EndGlobalSection
+EndGlobal
