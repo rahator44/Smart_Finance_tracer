@@ -1,3 +1,4 @@
+// [Rahat Visual Analytics] B2B corporate revenue vs expenditure cash flow comparison logic
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
