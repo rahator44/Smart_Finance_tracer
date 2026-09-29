@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Finance Tracer 🚀 — Enterprise & Personal Wealth Platform</title>
+  <meta name="description" content="A modern, high-performance financial management platform engineered for personal pocket tracking and corporate office finances. Built with .NET 8, SQLite, and MVVM.">
+  <meta property="og:title" content="Smart Finance Tracer — Enterprise & Personal Wealth Platform">
+  <meta property="og:description" content="Manage personal budgets, forecast corporate runway, and monitor office cash flow with Smart Finance Tracer.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rahator44.github.io/Smart_Finance_tracer/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Header & Navigation -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Smart Finance</span>
+          <span class="brand-badge">Tracer v1.0</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#demo" class="nav-link">Interactive Demo</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#architecture" class="nav-link">Architecture</a>
+        <a href="#contributors" class="nav-link">Contributors</a>
+        <a href="#download" class="nav-link">Download</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="https://github.com/rahator44/Smart_Finance_tracer" target="_blank" rel="noopener noreferrer" class="btn btn-github">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>Star on GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-glow"></div>
+    <div class="container hero-content">
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        <span>Version 1.0.0 Deployed • Ready for Download</span>
+      </div>
+      <h1 class="hero-title">
+        The Intelligent Desktop Platform for <span class="gradient-text">Personal & Office Wealth</span>
+      </h1>
+      <p class="hero-subtitle">
+        Engineered with <strong>.NET 8</strong>, <strong>WPF</strong>, and <strong>Entity Framework SQLite</strong>. Seamlessly switch between daily pocket budgeting and corporate financial runway analytics.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#demo" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Try Live Simulator
+        </a>
+        <a href="https://github.com/rahator44/Smart_Finance_tracer/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download v1.0.0 Release
+        </a>
+        <a href="https://github.com/rahator44/Smart_Finance_tracer" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          View Source Repository
+        </a>
+      </div>
+
+      <!-- Feature Pill Badges -->
+      <div class="tech-badges">
+        <span class="tech-badge">🖥️ .NET 8 WPF</span>
+        <span class="tech-badge">⚡ SQLite EF Core</span>
+        <span class="tech-badge">🔒 PBKDF2 HMAC-SHA256</span>
+        <span class="tech-badge">🏢 Multi-Tenant Routing</span>
+        <span class="tech-badge">📊 Dynamic Runway Forecast</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Simulator Section -->
+  <section class="demo-section" id="demo">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Live Interactive Simulator</div>
+        <h2 class="section-title">Experience the Smart Finance Engine in Real Time</h2>
+        <p class="section-subtitle">
+          Toggle between <strong>Personal Pocket</strong> and <strong>Corporate Office</strong> modes, input transactions, and watch KPIs compute dynamically.
+        </p>
+      </div>
+
+      <div class="simulator-wrapper glass-card">
+        <!-- Simulator Top Controls Bar -->
+        <div class="sim-header">
+          <div class="mode-switcher" role="tablist">
+            <button id="modePersonal" class="mode-btn active" role="tab" aria-selected="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Personal Finance</span>
+            </button>
+            <button id="modeOffice" class="mode-btn" role="tab" aria-selected="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              <span>Office Finance</span>
+            </button>
+          </div>
+
+          <div class="month-selector-wrapper">
+            <label for="monthSelect" class="sr-only">Select Month</label>
+            <span class="month-icon">📅</span>
+            <select id="monthSelect" class="select-input">
+              <option value="2026-09" selected>September 2026</option>
+              <option value="2026-08">August 2026</option>
+              <option value="2026-07">July 2026</option>
+              <option value="2026-06">June 2026</option>
+              <option value="2026-05">May 2026</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dynamic KPI Metric Cards Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card glass-panel" id="kpiCard1">
+            <div class="kpi-header">
+              <span class="kpi-label" id="kpiLabel1">Total Balance</span>
+              <span class="kpi-icon" id="kpiIcon1">💳</span>
+            </div>
+            <div class="kpi-value text-accent" id="kpiVal1">$14,850.00</div>
+            <div class="kpi-meta" id="kpiMeta1">Available liquid funds</div>
+          </div>
+
+          <div class="kpi-card glass-panel" id="kpiCard2">
+            <div class="kpi-header">
+              <span class="kpi-label" id="kpiLabel2">Monthly Income</span>
+              <span class="kpi-icon" id="kpiIcon2">📈</span>
+            </div>
+            <div class="kpi-value text-success" id="kpiVal2">+$7,200.00</div>
+            <div class="kpi-meta" id="kpiMeta2">+12.5% vs previous period</div>
+          </div>
+
+          <div class="kpi-card glass-panel" id="kpiCard3">
+            <div class="kpi-header">
+              <span class="kpi-label" id="kpiLabel3">Monthly Expenses</span>
+              <span class="kpi-icon" id="kpiIcon3">📉</span>
+            </div>
+            <div class="kpi-value text-danger" id="kpiVal3">-$3,420.00</div>
+            <div class="kpi-meta" id="kpiMeta3">47.5% of income utilized</div>
+          </div>
+
+          <div class="kpi-card glass-panel" id="kpiCard4">
+            <div class="kpi-header">
+              <span class="kpi-label" id="kpiLabel4">Budget Health Score</span>
+              <span class="kpi-icon" id="kpiIcon4">🛡️</span>
+            </div>
+            <div class="kpi-value text-warning" id="kpiVal4">88 / 100</div>
+            <div class="kpi-meta" id="kpiMeta4">Optimal financial pacing</div>
+          </div>
+        </div>
+
+        <!-- Simulation Work Area: Form + Ledger + Breakdown -->
+        <div class="sim-body-grid">
+          <!-- Left Column: Add Transaction Widget -->
+          <div class="sim-panel glass-panel">
+            <h3 class="panel-title">
+              <span>Quick Transaction Entry</span>
+              <span class="badge-mini">Live Preview</span>
+            </h3>
+
+            <form id="txForm" class="tx-form">
+              <div class="form-group">
+                <label for="txTitle">Description</label>
+                <input type="text" id="txTitle" placeholder="e.g. Client Retainer or Office Lease" required>
+                <span class="input-hint" id="smartHint">💡 Smart auto-categorization active</span>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="txType">Type</label>
+                  <select id="txType">
+                    <option value="Expense">Expense (-)</option>
+                    <option value="Income">Income (+)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="txCategory">Category</label>
+                  <select id="txCategory">
+                    <!-- Populated dynamically based on Personal / Office mode -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="txAmount">Amount ($)</label>
+                  <input type="number" id="txAmount" placeholder="150.00" min="1" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="txDate">Date</label>
+                  <input type="date" id="txDate" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Post Transaction to Ledger
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Column: Interactive Ledger Feed & Visual Proportion -->
+          <div class="sim-panel glass-panel">
+            <div class="ledger-header">
+              <h3 class="panel-title">Active Accounting Ledger</h3>
+              <button id="resetDemoBtn" class="btn-text">Reset Demo</button>
+            </div>
+
+            <div class="ledger-list" id="ledgerList">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <!-- Spending Breakdown Distribution -->
+            <div class="breakdown-box">
+              <h4 class="breakdown-title">Cash Flow Proportions</h4>
+              <div class="progress-bar-stacked" id="breakdownBar">
+                <!-- Stacked bar segments -->
+              </div>
+              <div class="breakdown-legend" id="breakdownLegend">
+                <!-- Legend items -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features & Architecture Section -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">System Capabilities</div>
+        <h2 class="section-title">Built for Performance, Security & Modularity</h2>
+        <p class="section-subtitle">
+          Engineered across four distinct architectural pillars, ensuring enterprise reliability and personal usability.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card glass-card">
+          <div class="feature-icon bg-accent-glow">🏢</div>
+          <h3 class="feature-title">Corporate Office Finance</h3>
+          <p class="feature-desc">
+            B2B client invoices, vendor payroll, operational burn rate, and liquid runway forecasting. Switch modes dynamically via MVVM state router.
+          </p>
+          <div class="feature-tag">Lead: Rahat (@rahator44)</div>
+        </div>
+
+        <div class="feature-card glass-card">
+          <div class="feature-icon bg-emerald-glow">⚡</div>
+          <h3 class="feature-title">Pocket Backend & Admin Portal</h3>
+          <p class="feature-desc">
+            SQLite database engine with Entity Framework Core, TransactionService CRUD, site treasury oversight, and corporate license audit lifecycle.
+          </p>
+          <div class="feature-tag">Lead: Farabi (@mahdiazfar27)</div>
+        </div>
+
+        <div class="feature-card glass-card">
+          <div class="feature-icon bg-purple-glow">🛡️</div>
+          <h3 class="feature-title">Security & Notifications</h3>
+          <p class="feature-desc">
+            PBKDF2 cryptographic password hashing with unique salt, remember-me session caching, and non-blocking floating animated toast banners.
+          </p>
+          <div class="feature-tag">Lead: Rupom (@rupamimamhasan-86)</div>
+        </div>
+
+        <div class="feature-card glass-card">
+          <div class="feature-icon bg-blue-glow">📊</div>
+          <h3 class="feature-title">Visual Reports & Personal Tracking</h3>
+          <p class="feature-desc">
+            Dynamic budget health scores, visual cash flow charts, smart category prediction, and automated expense warning thresholds.
+          </p>
+          <div class="feature-tag">Lead: Raven (@raven-0-2)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Flow Diagram Section -->
+  <section class="architecture-section" id="architecture">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">System Architecture</div>
+        <h2 class="section-title">High-Efficiency WPF MVVM Pattern</h2>
+        <p class="section-subtitle">
+          Clean separation of concerns with isolated business logic and automated test coverage.
+        </p>
+      </div>
+
+      <div class="arch-box glass-card">
+        <div class="arch-diagram">
+          <div class="arch-node node-ui">
+            <span class="node-title">WPF XAML Views</span>
+            <span class="node-sub">Views/Pages & Dialogs</span>
+          </div>
+          <div class="arch-arrow">➔ DataBinding & Commands ➔</div>
+          <div class="arch-node node-vm">
+            <span class="node-title">MVVM ViewModels</span>
+            <span class="node-sub">RelayCommand & INotifyPropertyChanged</span>
+          </div>
+          <div class="arch-arrow">➔ Service Layer ➔</div>
+          <div class="arch-node node-services">
+            <span class="node-title">Core Services</span>
+            <span class="node-sub">TransactionService & AuthService</span>
+          </div>
+          <div class="arch-arrow">➔ EF Core ORM ➔</div>
+          <div class="arch-node node-db">
+            <span class="node-title">SQLite Database</span>
+            <span class="node-sub">FinanceManager.db</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributors Hall of Fame Section -->
+  <section class="contributors-section" id="contributors">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Development Team</div>
+        <h2 class="section-title">Contributors & Engineering Badges</h2>
+        <p class="section-subtitle">
+          The collaborative team behind Smart Finance Tracer with individualized Git branch workflows.
+        </p>
+      </div>
+
+      <div class="contributors-grid">
+        <!-- Rahat -->
+        <div class="contributor-card glass-card">
+          <div class="card-lead-badge">👑 Project Lead</div>
+          <div class="avatar-wrapper">
+            <img src="https://github.com/rahator44.png" alt="Rahat" class="avatar-img" onerror="this.src='https://avatars.githubusercontent.com/u/283309641?v=4'">
+          </div>
+          <h3 class="contributor-name">Rahat</h3>
+          <div class="contributor-handle">@rahator44</div>
+          <p class="contributor-role">Office Finance, Corporate Runway Analytics & MVVM Router</p>
+          <div class="contributor-stats">
+            <div class="stat-item">
+              <span class="stat-num">58+</span>
+              <span class="stat-label">Commits</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Lead</span>
+              <span class="stat-label">Role</span>
+            </div>
+          </div>
+          <a href="https://github.com/rahator44" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+            GitHub Profile ➔
+          </a>
+        </div>
+
+        <!-- Farabi -->
+        <div class="contributor-card glass-card">
+          <div class="avatar-wrapper">
+            <img src="https://github.com/mahdiazfar27.png" alt="Farabi" class="avatar-img" onerror="this.src='https://avatars.githubusercontent.com/u/152358336?v=4'">
+          </div>
+          <h3 class="contributor-name">Farabi</h3>
+          <div class="contributor-handle">@mahdiazfar27</div>
+          <p class="contributor-role">Pocket Tracer Backend, SQLite EF Core & Admin Treasury</p>
+          <div class="contributor-stats">
+            <div class="stat-item">
+              <span class="stat-num">39</span>
+              <span class="stat-label">Commits</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Core</span>
+              <span class="stat-label">Role</span>
+            </div>
+          </div>
+          <a href="https://github.com/mahdiazfar27" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+            GitHub Profile ➔
+          </a>
+        </div>
+
+        <!-- Rupom -->
+        <div class="contributor-card glass-card">
+          <div class="avatar-wrapper">
+            <img src="https://github.com/rupamimamhasan-86.png" alt="Rupom" class="avatar-img" onerror="this.src='https://avatars.githubusercontent.com/u/251694974?v=4'">
+          </div>
+          <h3 class="contributor-name">Rupom</h3>
+          <div class="contributor-handle">@rupamimamhasan-86</div>
+          <p class="contributor-role">User Authentication Engine, Hashing & Toast Notifications</p>
+          <div class="contributor-stats">
+            <div class="stat-item">
+              <span class="stat-num">28</span>
+              <span class="stat-label">Commits</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Security</span>
+              <span class="stat-label">Role</span>
+            </div>
+          </div>
+          <a href="https://github.com/rupamimamhasan-86" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+            GitHub Profile ➔
+          </a>
+        </div>
+
+        <!-- Raven -->
+        <div class="contributor-card glass-card">
+          <div class="avatar-wrapper">
+            <img src="https://github.com/raven-0-2.png" alt="Raven" class="avatar-img" onerror="this.src='https://avatars.githubusercontent.com/u/154469301?v=4'">
+          </div>
+          <h3 class="contributor-name">Raven (Redwan)</h3>
+          <div class="contributor-handle">@raven-0-2</div>
+          <p class="contributor-role">Personal Dashboard Views, Transaction Dialogs & Charts</p>
+          <div class="contributor-stats">
+            <div class="stat-item">
+              <span class="stat-num">14</span>
+              <span class="stat-label">Commits</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Frontend</span>
+              <span class="stat-label">Role</span>
+            </div>
+          </div>
+          <a href="https://github.com/raven-0-2" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+            GitHub Profile ➔
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download & Installation Center -->
+  <section class="download-section" id="download">
+    <div class="container">
+      <div class="download-card glass-card">
+        <div class="download-header">
+          <div class="section-badge">Release v1.0.0</div>
+          <h2 class="download-title">Deploy Smart Finance Tracer on Your Machine</h2>
+          <p class="download-desc">
+            Download the pre-compiled binary or clone the repository to run from source code.
+          </p>
+        </div>
+
+        <div class="download-actions">
+          <a href="https://github.com/rahator44/Smart_Finance_tracer/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download v1.0.0 Release (Windows x64)
+          </a>
+        </div>
+
+        <div class="cli-box">
+          <div class="cli-header">
+            <span>Clone and Run with .NET 8 CLI</span>
+            <button id="copyCliBtn" class="btn-copy">Copy Command</button>
+          </div>
+          <pre class="cli-code"><code>git clone https://github.com/rahator44/Smart_Finance_tracer.git
+cd Smart_Finance_tracer
+dotnet restore
+dotnet run --project SmartFinanceManager</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <span class="footer-brand">Smart Finance Tracer</span>
+        <span class="footer-copy">© 2026 Open-Source Project. Licensed under MIT.</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/rahator44/Smart_Finance_tracer" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        <a href="https://github.com/rahator44/Smart_Finance_tracer/commits/main" target="_blank" rel="noopener noreferrer">Commit History</a>
+        <a href="https://github.com/rahator44/Smart_Finance_tracer/releases" target="_blank" rel="noopener noreferrer">Releases</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
