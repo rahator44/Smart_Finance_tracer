@@ -203,11 +203,11 @@ namespace SmartFinanceManager.ViewModels
             var match = MonthOptions.FirstOrDefault(m => m.Year == preferred.Year && m.Month == preferred.Month);
             if (match != default)
             {
-                _selectedMonth = match;
+                SelectedMonth = match;
             }
             else if (MonthOptions.Contains(todayMonth))
             {
-                _selectedMonth = todayMonth;
+                SelectedMonth = todayMonth;
             }
             else
             {
