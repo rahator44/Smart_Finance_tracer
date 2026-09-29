@@ -111,7 +111,7 @@ namespace SmartFinanceManager.ViewModels
 
             _isOfficeMode = IsOfficeUser;
 
-            NavigateHomeCommand = new RelayCommand(NavigateHome);
+            NavigateHomeCommand = new RelayCommand(() => NavigateHome());
             NavigateChartsCommand = new RelayCommand(NavigateCharts);
             NavigateAddCommand = new RelayCommand(NavigateAdd);
             NavigateReportsCommand = new RelayCommand(NavigateReports);
@@ -142,7 +142,12 @@ namespace SmartFinanceManager.ViewModels
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        public void NavigateHome(DateTime? targetMonth = null)
+        public void NavigateHome()
+        {
+            NavigateHome(null);
+        }
+
+        public void NavigateHome(DateTime? targetMonth)
         {
             ActiveTab = "Home";
 
