@@ -66,11 +66,11 @@ namespace SmartFinanceManager.Services
             using (var context = new FinanceDbContext())
             {
                 var startDate = new DateTime(month.Year, month.Month, 1);
-                var endDate = startDate.AddMonths(1).AddTicks(-1);
+                var endDate = startDate.AddMonths(1);
 
                 var query = context.Transactions
                     .AsNoTracking()
-                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Date >= startDate && t.Date <= endDate);
+                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Date >= startDate && t.Date < endDate);
 
                 // Filter by Type (Expense, Income, Transfer)
                 if (!string.IsNullOrWhiteSpace(typeFilter) && !typeFilter.Equals("All", StringComparison.OrdinalIgnoreCase))
@@ -119,11 +119,11 @@ namespace SmartFinanceManager.Services
             using (var context = new FinanceDbContext())
             {
                 var startDate = new DateTime(month.Year, month.Month, 1);
-                var endDate = startDate.AddMonths(1).AddTicks(-1);
+                var endDate = startDate.AddMonths(1);
 
                 var currentTxs = context.Transactions
                     .AsNoTracking()
-                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Date >= startDate && t.Date <= endDate)
+                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Date >= startDate && t.Date < endDate)
                     .ToList();
 
                 decimal income = currentTxs.Where(t => t.Type.Equals("Income", StringComparison.OrdinalIgnoreCase)).Sum(t => Math.Abs(t.Amount));
@@ -168,11 +168,11 @@ namespace SmartFinanceManager.Services
             using (var context = new FinanceDbContext())
             {
                 var startDate = new DateTime(month.Year, month.Month, 1);
-                var endDate = startDate.AddMonths(1).AddTicks(-1);
+                var endDate = startDate.AddMonths(1);
 
                 var filtered = context.Transactions
                     .AsNoTracking()
-                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Type.ToLower() == type.ToLower() && t.Date >= startDate && t.Date <= endDate)
+                    .Where(t => t.UserId == userId && t.IsOffice == isOffice && t.Type.ToLower() == type.ToLower() && t.Date >= startDate && t.Date < endDate)
                     .ToList();
 
                 decimal total = filtered.Sum(t => Math.Abs(t.Amount));
