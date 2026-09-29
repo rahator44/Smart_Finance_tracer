@@ -1,0 +1,26 @@
+## Build and output directories
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+TestResults/
+[Tt]emp/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+*.DotSettings.user
+VisualState.xml
+
+## Database files generated at runtime
+*.db-shm
+*.db-wal
+
+## OS files
+.DS_Store
+Thumbs.db
+desktop.ini
